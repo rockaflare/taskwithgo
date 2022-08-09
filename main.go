@@ -5,12 +5,14 @@ import (
 	"net/http"
 	"taskwithgo/controller"
 	"taskwithgo/database"
+	"taskwithgo/entity"
 
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 func main() {
+	dbStart()
 	log.Println("Menjalankan HTTP server di port 8080")
 	router := mux.NewRouter().StrictSlash(true)
 	handlerStart(router)
@@ -35,4 +37,6 @@ func dbStart() {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	database.Migrate(&entity.Task{})
 }
