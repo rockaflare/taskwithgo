@@ -19,19 +19,21 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="list-group">                
+              <div class="list-group">
+                {{range .Tasks}}                
                 <div class="list-group-item list-group-item-action">
                   <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">John Doe</h5>
-                    <small class="text-muted">15 November 2023</small>
+                    <h5 class="mb-1">{{.Pegawai}}</h5>
+                    <small class="text-muted">{{.Deadline}}</small>
                   </div>
-                  <p class="mb-1">Membuat task app dengan Golang</p>
+                  <p class="mb-1">{{.Detail}}/p>
                   <div class="d-flex pt-2">
                     <a class="btn btn-outline-primary me-2" href="#"><i class="bi bi-check-lg"></i></a>
                     <a class="btn btn-outline-success me-2" href="#"><i class="bi bi-pencil"></i></a>
                     <a class="btn btn-outline-danger" href="#"><i class="bi bi-trash"></i></a>
                   </div>
-                </div>                
+                </div>
+                {{end}}                
               </div>
             </div>
             <div class="card-footer">

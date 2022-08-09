@@ -20,7 +20,7 @@ func main() {
 }
 
 func handlerStart(router *mux.Router) {
-	router.HandleFunc("/get", controller.GetAllTask).Methods("GET")
+	router.HandleFunc("/index", controller.Index)
 	router.HandleFunc("/get/{id}", controller.GetTaskById).Methods("GET")
 }
 

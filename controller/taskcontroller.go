@@ -2,21 +2,40 @@ package controller
 
 import (
 	"encoding/json"
+	"html/template"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"taskwithgo/database"
 	"taskwithgo/entity"
+	"time"
 
 	"github.com/gorilla/mux"
 )
 
-func GetAllTask(w http.ResponseWriter, r *http.Request) {
+var (
+	id       int
+	pegawai  string
+	detail   string
+	deadline time.Time
+	IsDone   bool
+
+	view = template.Must(template.ParseFiles(".//views/index.html"))
+)
+
+func Index(w http.ResponseWriter, r *http.Request) {
 	var tasks []entity.Task
 	database.Connector.Find(&tasks)
-	w.Header().Set("Content-Type", "application/json")
+
+	data := entity.View{
+		Tasks: tasks,
+	}
+
+	_ = view.Execute(w, data)
+	/*w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(tasks)
+	json.NewEncoder(w).Encode(tasks)*/
+
 }
 
 func GetTaskById(w http.ResponseWriter, r *http.Request) {
