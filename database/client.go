@@ -2,6 +2,7 @@ package database
 
 import (
 	"log"
+	"taskwithgo/entity"
 
 	"github.com/jinzhu/gorm"
 )
@@ -16,4 +17,9 @@ func Connect(connectionString string) error {
 	}
 	log.Println("Koneksi berhasil!")
 	return nil
+}
+
+func Migrate(table *entity.Task) {
+	Connector.AutoMigrate(&table)
+	log.Println("Table dibuat.")
 }
