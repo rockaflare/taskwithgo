@@ -15,7 +15,7 @@ import (
 func main() {
 	dbStart()
 	log.Println("Menjalankan HTTP server di port 8080")
-	router := mux.NewRouter().StrictSlash(true)
+	router := mux.NewRouter()
 	handlerStart(router)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
@@ -23,6 +23,10 @@ func main() {
 func handlerStart(router *mux.Router) {
 	router.HandleFunc("/index", controller.Index)
 	router.HandleFunc("/get/{id}", controller.GetTaskById).Methods("GET")
+	router.HandleFunc("/add/{id}", controller.CreateTask).Methods("POST")
+	router.HandleFunc("/done/{id}", controller.SetDone)
+	router.HandleFunc("/delete/{id}", controller.DeleteTask)
+	router.HandleFunc("/update/{id}", controller.UpdateTask).Methods("PUT")
 }
 
 func dbStart() {
