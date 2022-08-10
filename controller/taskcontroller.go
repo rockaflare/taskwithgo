@@ -6,9 +6,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"taskwithgo/database"
-	"taskwithgo/entity"
 	"time"
+
+	"github.com/rockaflare/taskwithgo/database"
+	"github.com/rockaflare/taskwithgo/entity"
 
 	"github.com/gorilla/mux"
 )
@@ -20,7 +21,7 @@ var (
 	deadline time.Time
 	IsDone   bool
 
-	view = template.Must(template.ParseFiles(".//views/index.html"))
+	view = template.Must(template.ParseFiles("./pages/index.html"))
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {

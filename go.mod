@@ -1,4 +1,4 @@
-module taskwithgo
+module github.com/rockaflare/taskwithgo
 
 go 1.19
 

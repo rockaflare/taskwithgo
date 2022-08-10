@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
-	"taskwithgo/controller"
-	"taskwithgo/database"
-	"taskwithgo/entity"
+
+	"github.com/rockaflare/taskwithgo/controller"
+	"github.com/rockaflare/taskwithgo/database"
+	"github.com/rockaflare/taskwithgo/entity"
 
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"

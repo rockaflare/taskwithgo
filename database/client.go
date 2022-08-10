@@ -2,7 +2,8 @@ package database
 
 import (
 	"log"
-	"taskwithgo/entity"
+
+	"github.com/rockaflare/taskwithgo/entity"
 
 	"github.com/jinzhu/gorm"
 )
