@@ -21,7 +21,7 @@ var (
 	deadline time.Time
 	IsDone   bool
 
-	view = template.Must(template.ParseFiles("./pages/index.html"))
+	view = template.Must(template.ParseFiles("./pages/Index.html"))
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -33,10 +33,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_ = view.Execute(w, data)
-	/*w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(tasks)*/
-
 }
 
 func GetTaskById(w http.ResponseWriter, r *http.Request) {
