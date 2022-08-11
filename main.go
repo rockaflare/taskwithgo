@@ -21,12 +21,15 @@ func main() {
 }
 
 func handlerStart(router *mux.Router) {
-	router.HandleFunc("/index", controller.Index)
-	router.HandleFunc("/get/{id}", controller.GetTaskById).Methods("GET")
-	router.HandleFunc("/add/{id}", controller.CreateTask).Methods("POST")
-	router.HandleFunc("/done/{id}", controller.SetDone)
-	router.HandleFunc("/delete/{id}", controller.DeleteTask)
-	router.HandleFunc("/update/{id}", controller.UpdateTask).Methods("PUT")
+	router.HandleFunc("/index", controller.Index).Methods(http.MethodGet, http.MethodOptions)
+	router.HandleFunc("/get/{id}", controller.GetTaskById).Methods(http.MethodGet, http.MethodOptions)
+	router.HandleFunc("/add", controller.CreateTask).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/done/{id}", controller.SetDone).Methods(http.MethodPut, http.MethodOptions)
+	router.HandleFunc("/undone/{id}", controller.UnDone).Methods(http.MethodPut, http.MethodOptions)
+	router.HandleFunc("/delete/{id}", controller.DeleteTask).Methods(http.MethodDelete, http.MethodOptions)
+	router.HandleFunc("/update/{id}", controller.UpdateTask).Methods(http.MethodPut, http.MethodOptions)
+
+	router.Use(mux.CORSMethodMiddleware(router))
 }
 
 func dbStart() {

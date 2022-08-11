@@ -19,21 +19,8 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="list-group">
-                {{range .Tasks}}                
-                <div class="list-group-item list-group-item-action">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{.Pegawai}}</h5>
-                    <small class="text-muted">{{.Deadline}}</small>
-                  </div>
-                  <p class="mb-1">{{.Detail}}/p>
-                  <div class="d-flex pt-2">
-                    <a class="btn btn-outline-primary me-2" href="#"><i class="bi bi-check-lg"></i></a>
-                    <a class="btn btn-outline-success me-2" href="#"><i class="bi bi-pencil"></i></a>
-                    <a class="btn btn-outline-danger" href="#"><i class="bi bi-trash"></i></a>
-                  </div>
-                </div>
-                {{end}}                
+              <div class="list-group" id="tasklist">
+                            
               </div>
             </div>
             <div class="card-footer">
@@ -49,13 +36,13 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form>
+          <form method="get">
             <div class="form-floating mb-3">
-              <input input="text" class="form-control" id="pegawaiInput" placeholder="">
+              <input input="text" class="form-control" id="pegawaiVal" placeholder="">
               <label for="pegawaiInput">Pegawai</label>
             </div>
             <div class="form-floating mb-3">
-              <textarea class="form-control" id="detailInput" placeholder="" style="height: 100px"></textarea>
+              <textarea class="form-control" id="detailVal" placeholder="" style="height: 100px"></textarea>
               <label for="detailInput">Detail</label>
             </div>
             <div class="mb-3">
@@ -66,11 +53,8 @@
                 </span>
               </div>
             </div>
+            <button type="button" class="btn btn-primary" onclick="createTask()">Submit</button>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -82,6 +66,75 @@
   <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js" crossorigin="anonymous"></script>
   <script type="text/javascript">
     new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'));
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $.get("http://localhost:8080/index", function (data) {
+      for (let i = 0; i < data.length; i++) {
+        
+        if (data[i].isdone == true) {
+          $("#tasklist").append(
+            `<div class="list-group-item list-group-item-action">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1 text-muted"><s>${data[i].pegawai}</s></h5>
+                        <small class="text-muted"><s>${data[i].deadline}</s></small>
+                      </div>
+                      <p class="mb-1 text-muted"><s>${data[i].detail}</s></p>
+                      <div class="d-flex pt-2">
+                        <a class="btn btn-outline-primary me-2 active" href="#"><i class="bi bi-check-lg"></i></a>
+                        <a class="btn btn-outline-success me-2 disabled" href="#"><i class="bi bi-pencil"></i></a>
+                        <a class="btn btn-outline-danger disabled" href="#"><i class="bi bi-trash"></i></a>                        
+                      </div>
+            </div>`
+          );
+        } else {
+          $("#tasklist").append(
+            `<div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h5 class="mb-1">${data[i].pegawai}</h5>
+                          <small class="text-muted">${data[i].deadline}</small>
+                        </div>
+                        <p class="mb-1">${data[i].detail}</p>
+                        <div class="d-flex pt-2">
+                          <a class="btn btn-outline-primary me-2" href="#" onclick="editStatus(${data[i].id})"><i class="bi bi-check-lg"></i></a>
+                          <a class="btn btn-outline-success me-2" href="#"><i class="bi bi-pencil"></i></a>
+                          <a class="btn btn-outline-danger" href="#" onclick="deleteTask(${data[i].id})"><i class="bi bi-trash"></i></a>                        
+                        </div>
+            </div>`
+          );
+        }       
+      }
+    });
+    function createTask() {
+      var data = {
+        pegawai: $("#pegawaiVal").val(),
+        detail: $("#detailVal").val(),
+        deadline: $("#datetimepicker1Input").val(),
+        status: false
+      };
+      console.log(data);
+      $.ajax({
+        type: "POST",
+        url : `http://localhost:8080/add`,        
+        data : JSON.stringify(data),
+        dataType : 'json',
+      });
+    }
+
+    function editStatus(id){      
+      $.ajax({
+        type: "PUT",
+        url: `http://localhost:8080/done/${id}`,
+      })
+    }
+
+    function deleteTask(id) {
+      console.log(id)
+      $.ajax({
+        type: "DELETE",
+        url: `http://localhost:8080/delete/${id}`,
+      });
+    }
   </script>
   </body>
 </html>
